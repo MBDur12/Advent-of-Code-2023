@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <regex>
 #include <string>
 #include "utils.hpp"
 
@@ -38,4 +39,19 @@ std::vector<std::string> Split(std::string s, std::string delimeter)
 
     result.push_back(s.substr(start));
     return result;
+}
+
+std::vector<int> ExtractNums(std::string s)
+{
+    std::vector<int> nums{};
+    std::regex regex(R"(\d+)");
+    std::smatch match;
+
+    while(std::regex_search(s, match, regex))
+    {
+        nums.push_back(std::stoi(match.str()));
+        s = match.suffix();
+    }
+
+    return nums;
 }
