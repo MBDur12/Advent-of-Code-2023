@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <regex>
-#include <unordered_set>
+#include <unordered_map>
 #include <cmath>
 #include <assert.h>
 #include "../utils.hpp"
@@ -31,15 +31,38 @@ int CountMatchingCards(std::string lottery)
 
 void SolvePart1(const std::vector<std::string> &input)
 {
+    std::vector<std::string> cards{};
     int totalCount{0};
-    for (auto line : input)
+
+    for (size_t i = 0; i < input.size(); i++)
     {
-        std::vector<std::string> parts = Split(line, ":");
+        std::vector<std::string> parts = Split(input[i], ":");
         int count = CountMatchingCards(parts[1]);
-        totalCount += std::pow(2, count-1);
+        totalCount += std::pow(2, count - 1);
     }
 
     std::cout << "Part1: " << totalCount << std::endl;
+}
+
+void SolvePart2(const std::vector<std::string> &input)
+{
+    std::vector<int> counts(input.size(), 1);
+    for (size_t i = 0; i < input.size(); i++)
+    {
+        std::vector<std::string> parts = Split(input[i], ":");
+        int matches = CountMatchingCards(parts[1]);
+        for (size_t j = i+1; j < matches+i+1; j++)
+        {
+            counts[j] += counts[i]; // ACCOUNT for copies
+        }
+    }
+
+    int totalCount{0};
+    for (auto count : counts)
+    {
+        totalCount += count;
+    }
+    std::cout << "Part2: " << totalCount << std::endl;
 }
 
 int main(int argc, char **argv)
@@ -58,6 +81,6 @@ int main(int argc, char **argv)
     }
 
     SolvePart1(input);
-    
+    SolvePart2(input);
     return 0;
 }
