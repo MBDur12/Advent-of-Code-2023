@@ -41,17 +41,28 @@ std::vector<std::string> Split(std::string s, std::string delimeter)
     return result;
 }
 
-std::vector<int> ExtractNums(std::string s)
+std::vector<long> ExtractNums(std::string s)
 {
-    std::vector<int> nums{};
+    std::vector<long> nums{};
     std::regex regex(R"(\d+)");
     std::smatch match;
 
     while(std::regex_search(s, match, regex))
     {
-        nums.push_back(std::stoi(match.str()));
+        nums.push_back(std::stol(match.str()));
         s = match.suffix();
     }
 
     return nums;
+}
+
+std::string StripWhitespace(std::string s)
+{
+    int len = s.length();
+    int count = std::count(s.begin(), s.end(), ' ');
+
+    remove(s.begin(), s.end(), ' ');
+    s.resize(len - count);
+
+    return s;
 }

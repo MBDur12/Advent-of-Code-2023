@@ -5,25 +5,7 @@
 #include <unordered_map>
 #include <cctype>
 #include <regex>
-
-bool ReadFile(std::string filename, std::vector<std::string> &input)
-{
-    std::ifstream file{filename};
-    if (!file)
-    {
-        std::cerr << "Cannot open file " << filename << '\n';
-        return false;
-    }
-
-    std::string line;
-    while (getline(file, line))
-    {
-        input.push_back(line);
-    }
-
-    file.close();
-    return true;
-}
+#include "../utils.hpp"
 
 int FindDigitPair(std::string line)
 {
@@ -88,7 +70,7 @@ int main(int argc, char **argv)
     }
 
     std::vector<std::string> input;
-    if (!ReadFile(argv[1], input))
+    if (!ReadFileIntoLines(argv[1], input))
     {
         std::cerr << "Couldn't read the file provided." << '\n';
         return 1;
